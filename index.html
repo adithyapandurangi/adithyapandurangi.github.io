@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HariTerra | Photobioreactors for microalgae</title>
+<meta name="description" content="HariTerra designs LED-lit photobioreactors that grow microalgae indoors, all year, on biogenic CO₂.">
+<meta name="theme-color" content="#06302E">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HariTerra">
+<meta property="og:description" content="A cheaper way to grow microalgae.">
+<meta property="og:url" content="https://hariterra.com/">
+<meta property="og:image" content="https://hariterra.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face{
+    font-family:"Bricolage";
+    src:url("fonts/bricolage-latin-ext.woff2") format("woff2");
+    font-weight:200 800; font-display:swap;
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face{
+    font-family:"Bricolage";
+    src:url("fonts/bricolage-latin.woff2") format("woff2");
+    font-weight:200 800; font-display:swap;
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  :root{
+    --culture:#06302E;
+    --culture-deep:#041F1E;
+    --green:#4FB783;
+    --green-ink:#1F7A52;
+    --blue:#2E9BE0;
+    --paper:#EEF4F2;
+    --ink:#0C2726;
+    --muted:#4E6967;
+    --rule:#D2E0DC;
+    --on-culture:#E6F2EE;
+    --on-culture-soft:rgba(230,242,238,.74);
+
+    --font:"Bricolage",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --pad:clamp(20px,5vw,72px);
+    --max:1240px;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+       font-size:18px;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased;
+       text-rendering:optimizeLegibility}
+  a{color:inherit}
+  sub{font-size:.62em;line-height:0;position:relative;top:.22em;vertical-align:baseline}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* ---------- header ---------- */
+  .site-header{position:fixed;inset:0 0 auto 0;z-index:30;
+               padding-top:env(safe-area-inset-top,0px);
+               transition:background-color .35s ease,color .35s ease,box-shadow .35s ease;
+               color:var(--on-culture)}
+  .site-header.solid{background:rgba(238,244,242,.92);color:var(--ink);
+                     backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
+                     box-shadow:0 1px 0 var(--rule)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand svg{width:34px;height:34px;display:block}
+  .brand span{font-size:21px;font-weight:600;letter-spacing:-.02em}
+  .nav{display:flex;align-items:center;gap:30px}
+  .nav a{font-size:16px;text-decoration:none;opacity:.86;transition:opacity .2s}
+  .nav a:hover{opacity:1}
+  .nav a.pill{opacity:1;padding:9px 18px;border-radius:999px;border:1px solid currentColor}
+  @media (max-width:680px){ .nav a:not(.pill){display:none} .bar{height:64px} }
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;height:100svh;min-height:600px;max-height:1100px;
+        background:var(--culture);color:var(--on-culture);overflow:hidden;isolation:isolate}
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:-2}
+  .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+               background:
+                 linear-gradient(to top, rgba(4,31,30,.86) 0%, rgba(4,31,30,.35) 38%, rgba(4,31,30,0) 62%),
+                 linear-gradient(to bottom, rgba(4,31,30,.55) 0%, rgba(4,31,30,0) 18%)}
+  .hero-copy{position:absolute;left:0;right:0;bottom:0;
+             padding-bottom:calc(clamp(44px,9vh,104px) + env(safe-area-inset-bottom,0px))}
+  .hero h1{margin:0;font-weight:560;letter-spacing:-.035em;line-height:.94;
+           font-size:clamp(46px,8.4vw,120px);max-width:13ch;text-wrap:balance}
+  .hero p{margin:clamp(20px,3vh,30px) 0 0;max-width:40ch;font-size:clamp(18px,1.6vw,21px);
+          line-height:1.5;color:var(--on-culture-soft)}
+
+  /* ---------- sections ---------- */
+  .section{padding-top:clamp(84px,12vw,168px)}
+  .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(32px,6vw,96px);align-items:start}
+  .split > h2{margin:0;font-size:clamp(38px,5vw,64px);font-weight:560;letter-spacing:-.03em;line-height:1}
+  @media (min-width:900px){ .split > h2{position:sticky;top:120px} }
+  @media (max-width:899px){ .split{grid-template-columns:1fr} }
+
+  /* technology */
+  .tech{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(48px,6vw,80px) clamp(32px,5vw,72px);
+        margin:0;padding:0;list-style:none}
+  .tech li{max-width:34ch}
+  .tech svg{width:52px;height:52px;display:block;margin-bottom:22px}
+  .tech h3{margin:0 0 8px;font-size:24px;font-weight:600;letter-spacing:-.015em;line-height:1.2}
+  .tech p{margin:0;color:var(--muted)}
+  @media (max-width:600px){ .tech{grid-template-columns:1fr} }
+
+  /* team */
+  .team{margin:0;padding:0;list-style:none}
+  .team li{padding:30px 0;border-top:1px solid var(--rule)}
+  .team li:last-child{border-bottom:1px solid var(--rule)}
+  .team h3{margin:0 0 6px;font-size:clamp(24px,2.8vw,34px);font-weight:520;letter-spacing:-.02em;line-height:1.15}
+  .team p{margin:0;color:var(--muted)}
+  .team p b{font-weight:600;color:var(--ink)}
+
+  /* work with us */
+  .contact{margin-top:clamp(96px,13vw,180px);background:var(--culture);color:var(--on-culture);
+           position:relative;overflow:hidden}
+  .contact::before{content:"";position:absolute;inset:-40% -10% auto auto;width:70vw;height:70vw;
+                   border-radius:50%;pointer-events:none;
+                   background:radial-gradient(closest-side,rgba(79,183,131,.22),rgba(46,155,224,.08) 55%,transparent 72%)}
+  .contact .wrap{position:relative;padding-top:clamp(84px,11vw,150px);padding-bottom:clamp(40px,5vw,64px)}
+  .contact h2{margin:0 0 clamp(18px,2vw,26px);font-size:clamp(20px,2vw,24px);font-weight:500;
+              letter-spacing:-.01em;color:var(--on-culture-soft)}
+  .mail{display:inline-block;font-size:clamp(34px,6.6vw,96px);font-weight:520;letter-spacing:-.035em;
+        line-height:1;text-decoration:none;word-break:break-word;
+        background:linear-gradient(currentColor,currentColor) 0 100%/0% 3px no-repeat;
+        padding-bottom:.12em;transition:background-size .45s ease,color .3s ease}
+  .mail:hover{color:#fff;background-size:100% 3px}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+        margin-top:clamp(84px,11vw,150px);padding-top:26px;border-top:1px solid rgba(230,242,238,.16);
+        font-size:15px;color:var(--on-culture-soft)}
+  .foot svg{width:26px;height:26px;display:block}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .hero canvas{animation:fade 1.4s ease both}
+  .hero h1{animation:rise .9s .25s cubic-bezier(.2,.7,.2,1) both}
+  .hero p{animation:rise .9s .45s cubic-bezier(.2,.7,.2,1) both}
+  @media (prefers-reduced-motion:reduce){ .hero canvas,.hero h1,.hero p{animation:none} }
+
+  :focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:4px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs><clipPath id="htclip"><circle cx="32" cy="32" r="19"/></clipPath></defs>
+  <symbol id="htmark" viewBox="9 9 46 46"><g clip-path="url(#htclip)">
+    <path d="M10 34 Q21 27 32 34 T54 34 L54 60 L10 60 Z" fill="#4FB783"/>
+    <path d="M 23.0 23.0 L 23.03 23.32 L 23.11 23.64 L 23.25 23.96 L 23.45 24.29 L 23.69 24.61 L 23.98 24.93 L 24.32 25.25 L 24.69 25.57 L 25.11 25.89 L 25.55 26.21 L 26.01 26.54 L 26.5 26.86 L 27.0 27.18 L 27.5 27.5 L 28.0 27.82 L 28.5 28.14 L 28.99 28.46 L 29.45 28.79 L 29.89 29.11 L 30.31 29.43 L 30.68 29.75 L 31.02 30.07 L 31.31 30.39 L 31.55 30.71 L 31.75 31.04 L 31.89 31.36 L 31.97 31.68 L 32.0 32.0 L 31.97 32.32 L 31.89 32.64 L 31.75 32.96 L 31.55 33.29 L 31.31 33.61 L 31.02 33.93 L 30.68 34.25 L 30.31 34.57 L 29.89 34.89 L 29.45 35.21 L 28.99 35.54 L 28.5 35.86 L 28.0 36.18 L 27.5 36.5 L 27.0 36.82 L 26.5 37.14 L 26.01 37.46 L 25.55 37.79 L 25.11 38.11 L 24.69 38.43 L 24.32 38.75 L 23.98 39.07 L 23.69 39.39 L 23.45 39.71 L 23.25 40.04 L 23.11 40.36 L 23.03 40.68 L 23.0 41.0" fill="none" stroke="#2E9BE0" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M 41.0 23.0 L 40.97 23.32 L 40.89 23.64 L 40.75 23.96 L 40.55 24.29 L 40.31 24.61 L 40.02 24.93 L 39.68 25.25 L 39.31 25.57 L 38.89 25.89 L 38.45 26.21 L 37.99 26.54 L 37.5 26.86 L 37.0 27.18 L 36.5 27.5 L 36.0 27.82 L 35.5 28.14 L 35.01 28.46 L 34.55 28.79 L 34.11 29.11 L 33.69 29.43 L 33.32 29.75 L 32.98 30.07 L 32.69 30.39 L 32.45 30.71 L 32.25 31.04 L 32.11 31.36 L 32.03 31.68 L 32.0 32.0 L 32.03 32.32 L 32.11 32.64 L 32.25 32.96 L 32.45 33.29 L 32.69 33.61 L 32.98 33.93 L 33.32 34.25 L 33.69 34.57 L 34.11 34.89 L 34.55 35.21 L 35.01 35.54 L 35.5 35.86 L 36.0 36.18 L 36.5 36.5 L 37.0 36.82 L 37.5 37.14 L 37.99 37.46 L 38.45 37.79 L 38.89 38.11 L 39.31 38.43 L 39.68 38.75 L 40.02 39.07 L 40.31 39.39 L 40.55 39.71 L 40.75 40.04 L 40.89 40.36 L 40.97 40.68 L 41.0 41.0" fill="none" stroke="#2E9BE0" stroke-width="3.4" stroke-linecap="round"/>
+  </g>
+  <circle cx="32" cy="32" r="19" fill="none" stroke="#2E9BE0" stroke-width="4"/></symbol>
+</svg>
+
+<header class="site-header" id="header">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="HariTerra, back to top">
+      <svg role="img" aria-label="HariTerra logo"><use href="#htmark"/></svg>
+      <span>HariTerra</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#technology">Technology</a>
+      <a href="#team">Team</a>
+      <a class="pill" href="#contact">Work with us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" id="hero" aria-label="Introduction">
+    <canvas id="culture" aria-hidden="true"></canvas>
+    <div class="hero-copy">
+      <div class="wrap">
+        <h1>A cheaper way to grow microalgae.</h1>
+        <p>We design LED-lit photobioreactors that run indoors, all year, on biogenic CO<sub>2</sub>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="technology">
+    <div class="wrap split">
+      <h2>Technology</h2>
+      <ul class="tech">
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" aria-hidden="true">
+            <rect x="9" y="5" width="34" height="42" rx="5" stroke="#0C2726" stroke-width="2"/>
+            <line x1="16" y1="15" x2="36" y2="15" stroke="#0C2726" stroke-width="2" stroke-linecap="round"/>
+            <rect x="16" y="22" width="20" height="6" rx="2" fill="#0C2726"/>
+            <rect x="16" y="32" width="13" height="6" rx="2" fill="#0C2726"/>
+          </svg>
+          <h3>Economic channel geometry</h3>
+          <p>Our own panel design. We share the details under NDA.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" aria-hidden="true">
+            <rect x="6" y="8" width="40" height="7" rx="3.5" fill="#0C2726"/>
+            <g stroke="#2E9BE0" stroke-width="2" stroke-linecap="round">
+              <line x1="14" y1="21" x2="14" y2="29"/><line x1="22" y1="21" x2="22" y2="31"/>
+              <line x1="30" y1="21" x2="30" y2="31"/><line x1="38" y1="21" x2="38" y2="29"/>
+            </g>
+            <path d="M6 41 Q16 35 26 41 T46 41" stroke="#1F7A52" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <h3>LED optimisation</h3>
+          <p>We match the light to the culture, so less power is wasted.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" aria-hidden="true">
+            <path d="M40.5 18.5 A16 16 0 1 0 42 26" stroke="#1F7A52" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M35 17.5 L41.2 18.3 L42 12" stroke="#1F7A52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="26" cy="26" r="4" fill="#2E9BE0"/>
+          </svg>
+          <h3>Closed loop</h3>
+          <p>The culture stays clean and controlled, whatever the weather.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" aria-hidden="true">
+            <circle cx="16" cy="40" r="4" stroke="#2E9BE0" stroke-width="2"/>
+            <circle cx="27" cy="27" r="6" stroke="#2E9BE0" stroke-width="2"/>
+            <circle cx="38" cy="12" r="8" stroke="#2E9BE0" stroke-width="2"/>
+          </svg>
+          <h3>Biogenic CO<sub>2</sub></h3>
+          <p>We feed the reactor CO<sub>2</sub> from fermentation that would otherwise be vented.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="team">
+    <div class="wrap split">
+      <h2>Team</h2>
+      <ul class="team">
+        <li>
+          <h3>Naga Adithya Chandra Pandurangi</h3>
+          <p><b>Scientific co-founder.</b> PhD in Nanoscience and Chemical Engineering, former Marie Curie fellow.</p>
+        </li>
+        <li>
+          <h3>Satyam Shukla</h3>
+          <p><b>Co-founder, engineering.</b> Mechanical and CFD engineer.</p>
+        </li>
+        <li>
+          <h3>Harold Alvarez</h3>
+          <p><b>Co-founder, commercial.</b> PhD in Economics.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2>Work with us</h2>
+      <a class="mail" href="mailto:contact@hariterra.com">contact@hariterra.com</a>
+      <div class="foot">
+        <svg role="img" aria-label="HariTerra logo"><use href="#htmark"/></svg>
+        <span>© 2026 HariTerra</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* The hero: a slow view into a spirulina culture. Helical filaments drift and
+   turn, CO2 bubbles rise, and a soft band of LED light moves across. It is
+   purely illustrative and says nothing about how the reactor is built. */
+(() => {
+  const canvas = document.getElementById("culture");
+  const ctx = canvas.getContext("2d");
+  const hero = document.getElementById("hero");
+  const header = document.getElementById("header");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const mix = (a, b, k) => [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k, a[2]+(b[2]-a[2])*k];
+  const rgba = (c, a) => `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`;
+
+  const GREEN = [79,183,131], PALE = [176,240,206], TEAL = [64,190,176], BLUE = [46,155,224];
+
+  // fine grain so the culture reads as liquid rather than flat colour
+  const grain = document.createElement("canvas");
+  grain.width = grain.height = 180;
+  { const g = grain.getContext("2d"), im = g.createImageData(180, 180);
+    for (let i = 0; i < im.data.length; i += 4) {
+      const v = 128 + (Math.random() - 0.5) * 255;
+      im.data[i] = im.data[i+1] = im.data[i+2] = v; im.data[i+3] = 14;
+    }
+    g.putImageData(im, 0, 0); }
+
+  let W = 0, H = 0, dpr = 1, fils = [], near = [], bubbles = [], bg, grainPat, last = 0, t = 0, raf = 0, visible = true;
+
+  function filament(z) {
+    const s = 0.45 + z * 1.15;
+    const tint = Math.random();
+    const base = tint < 0.12 ? mix(TEAL, BLUE, 0.55) : mix(GREEN, TEAL, tint * 0.8);
+    return {
+      x: rand(-0.05, 1.05) * W, y: rand(-0.05, 1.05) * H, z,
+      len: rand(70, 150) * s, amp: rand(3.2, 5.6) * s, turns: rand(5, 9),
+      ang: rand(0, Math.PI * 2), va: rand(-0.035, 0.035),
+      bend: rand(-0.55, 0.55), phase: rand(0, Math.PI * 2),
+      spin: rand(0.5, 1.1) * (Math.random() < 0.5 ? -1 : 1),
+      vx: rand(-5, 5) * (0.35 + z), vy: rand(-4, 1.5) * (0.35 + z),
+      w: 0.8 + z * 1.9, base
+    };
+  }
+
+  function nearFilament() {
+    const f = filament(1);
+    const s = rand(2.1, 3.0);
+    f.len = rand(90, 150) * s; f.amp = rand(3.4, 5) * s; f.turns = rand(4, 6);
+    f.w = rand(4.5, 7.5); f.vx *= 1.6; f.vy *= 1.6; f.soft = rand(0.14, 0.22);
+    return f;
+  }
+
+  function seed() {
+    const n = Math.round(Math.min(92, Math.max(26, (W * H) / 15000)));
+    near = Array.from({ length: W < 700 ? 2 : 4 }, nearFilament);
+    fils = Array.from({ length: n }, () => filament(Math.pow(Math.random(), 1.5)))
+                .sort((a, b) => a.z - b.z);
+    bubbles = Array.from({ length: Math.round(n * 0.5) }, () => ({
+      x: rand(0, W), y: rand(0, H), r: rand(0.8, 2.8), v: rand(9, 24), w: rand(0, 6.28)
+    }));
+  }
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    bg = ctx.createRadialGradient(W * 0.32, H * 0.36, 0, W * 0.32, H * 0.36, Math.hypot(W, H) * 0.75);
+    bg.addColorStop(0, "#0C4D4D");
+    bg.addColorStop(0.55, "#073634");
+    bg.addColorStop(1, "#031C1B");
+    grainPat = ctx.createPattern(grain, "repeat");
+    seed();
+  }
+
+  function lightAt(x, bx) { const d = (x - bx) / (W * 0.24); return Math.exp(-d * d); }
+
+  function drawFilament(f, bx) {
+    const ca = Math.cos(f.ang), sa = Math.sin(f.ang);
+    const steps = Math.round(f.turns * 16);
+    const lit = 0.5 + 0.5 * lightAt(f.x, bx);
+    const depthFade = f.soft ? f.soft : 0.28 + 0.72 * f.z;
+    // three depth bins give the coil its 3D turn without per-segment styling
+    const bins = [[], [], []];
+    let px = 0, py = 0, pbin = -1;
+    for (let i = 0; i <= steps; i++) {
+      const u = i / steps;
+      const along = (u - 0.5) * f.len;
+      const curve = f.bend * (along * along) / f.len;
+      const th = u * f.turns * Math.PI * 2 + f.phase;
+      const lat = curve + f.amp * Math.sin(th);
+      const dz = Math.cos(th);
+      const x = f.x + along * ca - lat * sa;
+      const y = f.y + along * sa + lat * ca;
+      const bin = dz < -0.3 ? 0 : dz > 0.3 ? 2 : 1;
+      if (i > 0) bins[pbin === -1 ? bin : pbin].push(px, py, x, y);
+      px = x; py = y; pbin = bin;
+    }
+    const looks = [
+      { c: mix(f.base, [6, 48, 46], 0.35), a: 0.42, w: 0.72 },
+      { c: f.base,                         a: 0.78, w: 1.0  },
+      { c: mix(f.base, PALE, 0.5),         a: 0.98, w: 1.18 }
+    ];
+    for (let b = 0; b < 3; b++) {
+      const seg = bins[b]; if (!seg.length) continue;
+      ctx.beginPath();
+      for (let k = 0; k < seg.length; k += 4) { ctx.moveTo(seg[k], seg[k+1]); ctx.lineTo(seg[k+2], seg[k+3]); }
+      ctx.strokeStyle = rgba(looks[b].c, looks[b].a * depthFade * lit);
+      ctx.lineWidth = f.w * looks[b].w;
+      ctx.stroke();
+    }
+  }
+
+  function frame(now) {
+    // the culture drifts slowly, so 30 fps looks identical and costs half the power
+    if (!reduce && now - last < 32) { if (visible) raf = requestAnimationFrame(frame); return; }
+    const dt = Math.min(0.06, (now - last) / 1000 || 0.033);
+    last = now; t += dt;
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    // LED light from above, plus a broad band that drifts slowly across
+    const bx = W * (0.5 + 0.36 * Math.sin(t * 0.06));
+    ctx.globalCompositeOperation = "screen";
+    let g = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+    g.addColorStop(0, "rgba(170,236,255,0.12)"); g.addColorStop(1, "rgba(170,236,255,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    g = ctx.createLinearGradient(bx - W * 0.3, 0, bx + W * 0.3, 0);
+    g.addColorStop(0, "rgba(150,230,240,0)"); g.addColorStop(0.5, "rgba(150,230,240,0.075)"); g.addColorStop(1, "rgba(150,230,240,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "source-over";
+
+    ctx.lineCap = "round";
+    for (const f of fils) {
+      if (!reduce) {
+        f.x += f.vx * dt; f.y += f.vy * dt; f.ang += f.va * dt; f.phase += f.spin * dt * 1.4;
+        const m = f.len;
+        if (f.x < -m) f.x = W + m; else if (f.x > W + m) f.x = -m;
+        if (f.y < -m) f.y = H + m; else if (f.y > H + m) f.y = -m;
+      }
+      drawFilament(f, bx);
+    }
+
+    ctx.strokeStyle = "rgba(205,245,255,0.34)"; ctx.lineWidth = 1;
+    for (const b of bubbles) {
+      if (!reduce) {
+        b.y -= b.v * dt; b.x += Math.sin(t * 1.3 + b.w) * 0.18;
+        if (b.y < -6) { b.y = H + 6; b.x = rand(0, W); }
+      }
+      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    for (const f of near) {
+      if (!reduce) {
+        f.x += f.vx * dt; f.y += f.vy * dt; f.ang += f.va * dt; f.phase += f.spin * dt;
+        const m = f.len;
+        if (f.x < -m) f.x = W + m; else if (f.x > W + m) f.x = -m;
+        if (f.y < -m) f.y = H + m; else if (f.y > H + m) f.y = -m;
+      }
+      drawFilament(f, bx);
+    }
+
+    ctx.fillStyle = grainPat; ctx.fillRect(0, 0, W, H);
+
+    if (!reduce && visible) raf = requestAnimationFrame(frame);
+  }
+
+  function start() { cancelAnimationFrame(raf); last = performance.now() - 40; raf = requestAnimationFrame(frame); }
+
+  resize();
+  if (reduce) { t = 12; frame(performance.now()); } else start();
+
+  let rt;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (reduce) frame(performance.now()); }, 150); });
+
+  // pause the animation when the hero is off screen, and switch the header style
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting && !document.hidden;
+    header.classList.toggle("solid", e.intersectionRatio < 0.12);
+    if (visible && !reduce) start();
+  }, { threshold: [0, 0.12, 0.5] }).observe(hero);
+
+  document.addEventListener("visibilitychange", () => {
+    visible = !document.hidden;
+    if (visible && !reduce) start();
+  });
+})();
+</script>
+</body>
+</html>
